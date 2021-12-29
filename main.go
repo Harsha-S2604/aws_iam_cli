@@ -24,7 +24,7 @@ func main() {
 	
 	fmt.Println("Please select any option to perform operation")
 	fmt.Println("========================================================")
-	fmt.Println("1. Create a group\n2. Delete a group\n3. Create a user\n4. Delete a user")
+	fmt.Println("1. Create a group\n2. Delete a group\n3. Create a user\n4. Delete a user\n5. List groups\n6. List users\n")
 	
 	// get the input from user using Scanf function
 	var option int
@@ -54,7 +54,7 @@ func main() {
 
 func CreateGroup(iamClient *iam.Client) {
 	var groupName string
-	fmt.Println("Enter a group name")
+	fmt.Print("Enter a group name: ")
 	fmt.Scanf("%s", &groupName)
 	createGrpInp := &iam.CreateGroupInput{
 		GroupName: aws.String(groupName),
@@ -64,12 +64,28 @@ func CreateGroup(iamClient *iam.Client) {
 	if createGrpErr != nil {
 		fmt.Println("Error in creating the group", createGrpErr.Error())
 	} else {
-		fmt.Printf("Group %s created successfully\n", *(createGroupResult.Group.GroupName))
+		fmt.Printf("--------------- Group %s created successfully ---------------\n", *(createGroupResult.Group.GroupName))
 	}
 }
 
 func DeleteGroup(iamClient *iam.Client) {
-	fmt.Println("Delete group")
+	fmt.Println("\n=============== DELETE GROUP ===============")
+	ListGroups(iamClient)
+	var groupName string
+	fmt.Print("Enter the group name: ")
+	fmt.Scanf("%s", &groupName)
+	
+	deleteGrpInp := &iam.DeleteGroupInput{
+		GroupName: aws.String(groupName),
+	}
+
+	_, deleteGroupErr := iamClient.DeleteGroup(context.TODO(), deleteGrpInp)
+
+	if deleteGroupErr != nil {
+		fmt.Println("Error deleting the group", deleteGroupErr.Error())
+	} else {
+		fmt.Println("---------------- Successfully deleted the group ----------------")
+	}
 }
 
 func CreateUser(iamClient *iam.Client) {
@@ -78,4 +94,18 @@ func CreateUser(iamClient *iam.Client) {
 
 func DeleteUser(iamClient *iam.Client) {
 	fmt.Println("Delete user")
+}
+
+func ListGroups(iamClient *iam.Client) {
+	fmt.Println("\nHERE ARE THE LIST OF GROUPS")
+	listGrpsInp := &iam.ListGroupsInput{}
+	getGroupsResult, getGroupsErr := iamClient.ListGroups(context.TODO(), listGrpsInp)
+	if getGroupsErr != nil {
+		fmt.Println("Error fetching groups", getGroupsErr.Error())
+	} else {
+		groupsArr := getGroupsResult.Groups
+		for i := 0; i < len(groupsArr); i++ {
+			fmt.Println(*(groupsArr[i].GroupName))
+		}
+	}
 }
