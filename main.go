@@ -14,5 +14,15 @@ func main() {
 	var option int
 	fmt.Printf("Enter the number: ")
 	fmt.Scanf("%d", &option)
-	fmt.Println(option)
+	
+	switch(option) {
+		case 1:
+		    fmt.Println("create group")
+		case 2:
+		    fmt.Println("Delete group")
+		case 3:
+		    fmt.Println("Create user")
+		case 4:
+		    fmt.Println("Delete user")
+	}
 }
