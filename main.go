@@ -22,9 +22,10 @@ func main() {
 
 	iamClient := iam.NewFromConfig(cfg)
 	
+	iamForLoop:for {
 	fmt.Println("Please select any option to perform operation")
 	fmt.Println("========================================================")
-	fmt.Println("1. Create a group\n2. Delete a group\n3. Create a user\n4. Delete a user\n5. List groups\n6. List users\n")
+	fmt.Println("1. Create a group\n2. Delete a group\n3. Create a user\n4. Delete a user\n5. List groups\n6. List users\n7. Exit\n")
 	
 	// get the input from user using Scanf function
 	var option int
@@ -49,6 +50,13 @@ func main() {
 		    CreateUser(iamClient)
 		case 4:
 		    DeleteUser(iamClient)
+		case 5:
+		    ListGroups(iamClient)
+		case 6:
+		    ListUsers(iamClient)
+		case 7:
+		    break iamForLoop
+	}
 	}
 }
 
@@ -84,7 +92,7 @@ func DeleteGroup(iamClient *iam.Client) {
 	if deleteGroupErr != nil {
 		fmt.Println("Error deleting the group", deleteGroupErr.Error())
 	} else {
-		fmt.Println("---------------- Successfully deleted the group ----------------")
+		fmt.Println("---------------- Successfully deleted the group ----------------\n")
 	}
 }
 
@@ -97,15 +105,24 @@ func DeleteUser(iamClient *iam.Client) {
 }
 
 func ListGroups(iamClient *iam.Client) {
-	fmt.Println("\nHERE ARE THE LIST OF GROUPS")
 	listGrpsInp := &iam.ListGroupsInput{}
 	getGroupsResult, getGroupsErr := iamClient.ListGroups(context.TODO(), listGrpsInp)
 	if getGroupsErr != nil {
 		fmt.Println("Error fetching groups", getGroupsErr.Error())
 	} else {
 		groupsArr := getGroupsResult.Groups
-		for i := 0; i < len(groupsArr); i++ {
-			fmt.Println(*(groupsArr[i].GroupName))
+		if len(groupsArr) > 0 {
+			fmt.Println("\n=============== Here are the list of groups ================")
+			for i := 0; i < len(groupsArr); i++ {
+				fmt.Println(*(groupsArr[i].GroupName))
+			}
+		} else {
+			fmt.Println("There are no groups in this account\n")
 		}
 	}
+	fmt.Println()
+}
+
+func ListUsers(iamClient *iam.Client) {
+	fmt.Println("LIST USERS")
 }
