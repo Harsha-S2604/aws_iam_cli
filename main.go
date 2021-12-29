@@ -5,6 +5,8 @@ import (
 )
 
 func main() {
+
+	// welcome note and description
 	fmt.Println("Hello, Welcome to the AWS IAM Command line interface :)")
 	fmt.Println("Please select a operation to perform")
 	fmt.Println("========================================================")
@@ -15,6 +17,14 @@ func main() {
 	fmt.Printf("Enter the number: ")
 	fmt.Scanf("%d", &option)
 	
+	// call function based on the user input
+	/*
+	   if user selects
+	   1 => call CreateGroup function
+	   2 => call DeleteGroup function
+	   3 => call CreateUser function
+	   4 => call  DeleteUser function
+	*/
 	switch(option) {
 		case 1:
 		    CreateGroup()
