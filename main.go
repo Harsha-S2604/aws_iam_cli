@@ -6,6 +6,7 @@ import (
 	"log"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/aws"
 )
 
 func main() {
@@ -40,6 +41,7 @@ func main() {
 	*/
 	switch(option) {
 		case 1:
+		    fmt.Println("\n=============== CREATE GROUP ===============")
 		    CreateGroup(iamClient)
 		case 2:
 		    DeleteGroup(iamClient)
@@ -51,7 +53,19 @@ func main() {
 }
 
 func CreateGroup(iamClient *iam.Client) {
-	fmt.Println("Create group")
+	var groupName string
+	fmt.Println("Enter a group name")
+	fmt.Scanf("%s", &groupName)
+	createGrpInp := &iam.CreateGroupInput{
+		GroupName: aws.String(groupName),
+	}
+	
+	createGroupResult, createGrpErr := iamClient.CreateGroup(context.TODO(),createGrpInp)
+	if createGrpErr != nil {
+		fmt.Println("Error in creating the group", createGrpErr.Error())
+	} else {
+		fmt.Printf("Group %s created successfully\n", *(createGroupResult.Group.GroupName))
+	}
 }
 
 func DeleteGroup(iamClient *iam.Client) {
