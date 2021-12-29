@@ -17,12 +17,28 @@ func main() {
 	
 	switch(option) {
 		case 1:
-		    fmt.Println("create group")
+		    CreateGroup()
 		case 2:
-		    fmt.Println("Delete group")
+		    DeleteGroup()
 		case 3:
-		    fmt.Println("Create user")
+		    CreateUser()
 		case 4:
-		    fmt.Println("Delete user")
+		    DeleteUser()
 	}
+}
+
+func CreateGroup() {
+	fmt.Println("Create group")
+}
+
+func DeleteGroup() {
+	fmt.Println("Delete group")
+}
+
+func CreateUser() {
+	fmt.Println("Create user")
+}
+
+func DeleteUser() {
+	fmt.Println("Delete user")
 }
