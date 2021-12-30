@@ -99,7 +99,7 @@ func DeleteGroup(iamClient *iam.Client) {
 func CreateUser(iamClient *iam.Client) {
 	fmt.Println("\n=============== CREATE USER ===============")
 	var userName string
-	fmt.Print("Enter the user name: ")
+	fmt.Print("Enter the username to create: ")
 	fmt.Scanf("%s", &userName)
 
 	createUserInp := &iam.CreateUserInput {
@@ -109,18 +109,32 @@ func CreateUser(iamClient *iam.Client) {
 	createUserResult, createUserErr := iamClient.CreateUser(context.TODO(), createUserInp)
 
 	if createUserErr != nil {
-		fmt.Printf("%T Error creating the user", createUserErr)
-		switch t := createUserErr.(type) {
-			default:
-				fmt.Println(t)
-		}
+		fmt.Println("Error creating the user: ", createUserErr.Error())
 	} else {
 		fmt.Printf("---------------- User %s created successfully ----------------\n\n", *(createUserResult.User.UserName)) 
 	}
 }
 
 func DeleteUser(iamClient *iam.Client) {
-	fmt.Println("Delete user")
+	fmt.Println("\n=============== DELETE USER ===============")
+	ListUsers(iamClient)
+
+	var userName string
+	fmt.Print("Enter username to delete: ")
+	fmt.Scanf("%s", &userName)
+
+	deleteUserInp := &iam.DeleteUserInput {
+		UserName: aws.String(userName),
+	}
+
+	_, deleteUserErr := iamClient.DeleteUser(context.TODO(), deleteUserInp)
+
+	if deleteUserErr != nil {
+		fmt.Printf("Error deleting the user: %s\n\n", deleteUserErr.Error())
+	} else {
+		fmt.Println("\n--------------- USER DELETED SUCCESSFULLY ----------------\n\n")
+	}
+
 }
 
 func ListGroups(iamClient *iam.Client) {
