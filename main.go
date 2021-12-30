@@ -124,5 +124,20 @@ func ListGroups(iamClient *iam.Client) {
 }
 
 func ListUsers(iamClient *iam.Client) {
-	fmt.Println("LIST USERS")
+	listUsersInp := &iam.ListUsersInput{}
+	getUsersResult, getUsersErr := iamClient.ListUsers(context.TODO(), listUsersInp)
+	if getUsersErr != nil {
+		fmt.Println("Error fetching users", getUsersErr.Error())
+	} else {
+		usersArr := getUsersResult.Users
+		if len(usersArr) > 0 {
+			fmt.Println("\n=============== Here are the list of users ===============")
+			for i := 0; i < len(usersArr); i++ {
+				fmt.Println(*(usersArr[i].UserName))
+			}
+			fmt.Println()
+		} else {
+			fmt.Println("There are no users in this account\n")
+		}
+	}
 }
