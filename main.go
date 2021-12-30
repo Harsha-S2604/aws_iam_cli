@@ -97,7 +97,26 @@ func DeleteGroup(iamClient *iam.Client) {
 }
 
 func CreateUser(iamClient *iam.Client) {
-	fmt.Println("Create user")
+	fmt.Println("\n=============== CREATE USER ===============")
+	var userName string
+	fmt.Print("Enter the user name: ")
+	fmt.Scanf("%s", &userName)
+
+	createUserInp := &iam.CreateUserInput {
+		UserName: aws.String(userName),
+	}
+
+	createUserResult, createUserErr := iamClient.CreateUser(context.TODO(), createUserInp)
+
+	if createUserErr != nil {
+		fmt.Printf("%T Error creating the user", createUserErr)
+		switch t := createUserErr.(type) {
+			default:
+				fmt.Println(t)
+		}
+	} else {
+		fmt.Printf("---------------- User %s created successfully ----------------\n\n", *(createUserResult.User.UserName)) 
+	}
 }
 
 func DeleteUser(iamClient *iam.Client) {
@@ -133,7 +152,7 @@ func ListUsers(iamClient *iam.Client) {
 		if len(usersArr) > 0 {
 			fmt.Println("\n=============== Here are the list of users ===============")
 			for i := 0; i < len(usersArr); i++ {
-				fmt.Println(*(usersArr[i].UserName))
+				fmt.Println(*(usersArr[i].UserName) + " created on", *(usersArr[i].CreateDate))
 			}
 			fmt.Println()
 		} else {
