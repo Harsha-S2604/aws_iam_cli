@@ -9,7 +9,7 @@ You must have an AWS account, and have your default credentials and AWS Region c
 Follow these steps to install these CLI
 
 * First, Clone this repository <br /><br />
-    `$ git clone --depth=1 https://github.com/Harsha-S2604/aws_iam_cli.git` <br /><br />
+    `$ git clone https://github.com/Harsha-S2604/aws_iam_cli.git` <br /><br />
 
 * Change to cloned directory <br /><br />
     
